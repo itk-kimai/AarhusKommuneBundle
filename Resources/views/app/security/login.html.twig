@@ -39,23 +39,17 @@
 
 {% block login_social_auth %}
     {% if saml_config.isActivated() %}
-        {% set login_message = kimai_config.get('aarhuskommune.login_message') %}
-        {% if login_message is not empty %}
-            <div class="card-body login-message">
-                {{ login_message|raw }}
-            </div>
-        {% endif %}
 
         <div class="card-body">
-            <div class="row">
+            <div class="row text-center">
+                {% set social_login_title = kimai_config.get('aarhuskommune.social_login_title') %}
+                {% if social_login_title is not empty %}
+                    <h1>{{ social_login_title|raw }}</h1>
+                {% endif %}
                 {% if not kimai_config.loginFormActive %}
                     <h2 class="card-title text-center mb-4">{{ block('login_box_msg') }}</h2>
                 {% endif %}
                 <div class="col">
-                    {% set social_login_title = kimai_config.get('aarhuskommune.social_login_title') %}
-                    {% if social_login_title is not empty %}
-                        <h3>{{ social_login_title|raw }}</h3>
-                    {% endif %}
                     <div class="d-grid gap-4">
                         <a href="{{ path('saml_login') }}" id="social-login-button" tabindex="50" class="btn btn-dark">
                             {{ saml_config.getTitle()|trans }}
@@ -64,5 +58,11 @@
                 </div>
             </div>
         </div>
+        {% set login_message = kimai_config.get('aarhuskommune.login_message') %}
+        {% if login_message is not empty %}
+            <div class="card-body login-message">
+                {{ login_message|raw }}
+            </div>
+        {% endif %}
     {% endif %}
 {% endblock %}
