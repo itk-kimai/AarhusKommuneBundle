@@ -38,7 +38,7 @@ jobs:
 
       - name: Coding standards
         run: |
-          docker run --rm --volume $PWD:/md peterdavehello/markdownlint markdownlint --ignore vendor --ignore LICENSE.md '**/*.md'
+          docker run --rm --volume "$PWD":/md peterdavehello/markdownlint markdownlint --ignore vendor --ignore LICENSE.md '**/*.md'
 
   composer-normalize:
     name: composer-normalize
@@ -48,8 +48,8 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - run: |
-          docker run --user root --rm --volume ${PWD}:/app itkdev/php8.1-fpm:latest composer install
-          docker run --user root --rm --volume ${PWD}:/app itkdev/php8.1-fpm:latest composer normalize
+          docker run --user root --rm --volume "$PWD":/app itkdev/php8.1-fpm:latest composer install
+          docker run --user root --rm --volume "$PWD":/app itkdev/php8.1-fpm:latest composer normalize
 
   coding-standards-php-cs-fixer:
     name: coding-standards-check/php-cs-fixer
@@ -59,8 +59,8 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - run: |
-          docker run --user root --rm --volume ${PWD}:/app itkdev/php8.1-fpm:latest composer install
-          docker run --user root --rm --volume ${PWD}:/app itkdev/php8.1-fpm:latest composer coding-standards-check/php-cs-fixer
+          docker run --user root --rm --volume "$PWD":/app itkdev/php8.1-fpm:latest composer install
+          docker run --user root --rm --volume "$PWD":/app itkdev/php8.1-fpm:latest composer coding-standards-check/php-cs-fixer
 
   coding-standards-twig-cs-fixer:
     name: coding-standards-check/twig-cs-fixer
@@ -70,8 +70,8 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - run: |
-          docker run --user root --rm --volume ${PWD}:/app itkdev/php8.1-fpm:latest composer install
-          docker run --user root --rm --volume ${PWD}:/app itkdev/php8.1-fpm:latest composer coding-standards-check/twig-cs-fixer
+          docker run --user root --rm --volume "$PWD":/app itkdev/php8.1-fpm:latest composer install
+          docker run --user root --rm --volume "$PWD":/app itkdev/php8.1-fpm:latest composer coding-standards-check/twig-cs-fixer
 
   code-analysis-phpstan:
     name: code-analysis/phpstan
@@ -81,5 +81,18 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - run: |
-          docker run --user root --rm --volume ${PWD}:/app itkdev/php8.1-fpm:latest composer install
-          docker run --user root --rm --volume ${PWD}:/app itkdev/php8.1-fpm:latest composer code-analysis/phpstan
+          docker run --user root --rm --volume "$PWD":/app itkdev/php8.1-fpm:latest composer install
+          docker run --user root --rm --volume "$PWD":/app itkdev/php8.1-fpm:latest composer code-analysis/phpstan
+
+  check-create-release:
+    runs-on: ubuntu-latest
+    name: Test create release
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create test release
+        run: |
+          ./bin/create-release dev-test

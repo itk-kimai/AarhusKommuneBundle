@@ -43,7 +43,7 @@ final class AarhusKommuneConfiguration
         $activity = null === $id ? null : $this->activityRepository->find($id);
 
         if (null !== $activity && $activity->getProject() !== $project) {
-            throw new RuntimeException(sprintf('Activity %s (%s) does not belong to project %s (%s)', $activity->getName(), $activity->getId(), $project->getName(), $project->getId()));
+            throw new RuntimeException(\sprintf('Activity %s (%s) does not belong to project %s (%s)', $activity->getName(), $activity->getId(), $project->getName(), $project->getId()));
         }
 
         return $activity;

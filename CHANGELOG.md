@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* [PR-32](https://github.com/itk-kimai/AarhusKommuneBundle/pull/32)
+  2491: Updated Teamlead permissions documentation
+* [PR-29](https://github.com/itk-kimai/AarhusKommuneBundle/pull/30)
+  Remove prerelease flag in release.yml.
+* [PR-31](https://github.com/itk-kimai/AarhusKommuneBundle/pull/31)
+  Code cleanup
+* [PR-28](https://github.com/itk-kimai/AarhusKommuneBundle/pull/28)
+  Improved release script
+
 ## [1.2.0] - 2024-07-04
 
 * [PR-27](https://github.com/itk-kimai/AarhusKommuneBundle/pull/27)
