@@ -1,9 +1,6 @@
 name: release
 
-on:
-  push:
-    tags:
-      - '*.*.*'
+on: pull_request
 
 permissions:
   contents: write
@@ -13,6 +10,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      # https://github.com/mxschmitt/action-tmate?tab=readme-ov-file#manually-triggered-debug
+      # Enable tmate debugging if debug logging is enabled (cf.
+      # https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/accessing-contextual-information-about-workflow-runs#runner-context)
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        with:
+          limit-access-to-actor: false
+        if: 1 == runner.debug
 
       - name: Build and create release
         env:
@@ -25,8 +31,8 @@ jobs:
 
           docker compose run --user root --rm php bin/create-release "$tag_name"
 
-          # Delete release if it already exists.
-          gh release view "$release_name" > /dev/null 2>&1 && gh release delete "$release_name" --yes
-          # The package name contains the tag name with any leading `dev-` removed
-          gh release create "$release_name" --generate-notes ./*-"${tag_name#dev-}".tar.gz checksum.txt
+          # # Delete release if it already exists.
+          # gh release view "$release_name" > /dev/null 2>&1 && gh release delete "$release_name" --yes
+          # # The package name contains the tag name with any leading `dev-` removed
+          # gh release create "$release_name" --generate-notes ./*-"${tag_name#dev-}".tar.gz checksum.txt
         shell: bash
