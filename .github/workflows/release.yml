@@ -20,7 +20,7 @@ jobs:
           # https://stackoverflow.com/a/71158878/2502647
           BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
         run: |
-          tag_name="${BRANCH_NAME//[^[:alnum:]-]/_}"
+          tag_name="${BRANCH_NAME}"
           release_name="${tag_name}"
 
           docker compose run --user root --rm php bin/create-release "$tag_name"
