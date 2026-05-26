@@ -4,7 +4,6 @@
 #
 # Execute all migrations with:
 # bin/console kimai:bundle:aarhus_kommune:install
-# bin/console doctrine:migrations:migrate --em=default --configuration=var/plugins/AarhusKommuneBundle/Migrations/aarhus_kommune.yaml
 # --------------------------------------------------------------------------------------------------
 
 table_storage:
