@@ -5,10 +5,10 @@
 Download [a release](https://github.com/itk-kimai/AarhusKommuneBundle/releases) and extract it to `var/plugins/`.
 
 ```shell
-# Install plugin assets in public/bundles/aarhuskommune (note it's "aarhuskommune" and not "aarhus_kommune").
-# Use "/bundles/aarhuskommune/" as base path when referencing assets..
+# Installs plugin assets to public/bundles/aarhuskommune (note "aarhuskommune", not "aarhus_kommune")
+# and applies the plugin's doctrine migrations.
+# Use "/bundles/aarhuskommune/" as base path when referencing assets.
 bin/console kimai:bundle:aarhus_kommune:install --no-interaction
-bin/console doctrine:migrations:migrate --configuration=var/plugins/AarhusKommuneBundle/Migrations/aarhus_kommune.yaml --no-interaction
 bin/console kimai:reload --no-interaction
 ```
 
