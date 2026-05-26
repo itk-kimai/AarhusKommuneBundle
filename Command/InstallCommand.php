@@ -24,4 +24,9 @@ class InstallCommand extends AbstractBundleInstallerCommand
     {
         return true;
     }
+
+    protected function getMigrationConfigFilename(): ?string
+    {
+        return __DIR__.'/../Migrations/aarhus_kommune.yaml';
+    }
 }
