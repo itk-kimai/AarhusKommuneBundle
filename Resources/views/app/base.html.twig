@@ -1,7 +1,7 @@
 {# Resources/views/app/base.html.twig #}
 {% extends '@App/base.html.twig' %}
 
-{% set meta_title = kimai_config.get('aarhuskommune.meta-title') %}
+{% set meta_title = config('aarhuskommune.meta-title') %}
 
 {% block body_start %}
     class="{{ app.request.attributes.get('_route')|slug|lower }}"
@@ -38,7 +38,7 @@
 {% endblock %}
 
 {% block page_content_after %}
-    {% set help_url = kimai_config.get('aarhuskommune.help_url') %}
+    {% set help_url = config('aarhuskommune.help_url') %}
     {% if help_url|default(false) %}
         <div class="float-help">
             <a href="{{ help_url }}" target="_blank" accesskey="h" title="{{ 'help'|trans }}">

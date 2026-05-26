@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* 7596: Replace deprecated `kimai_config.get(...)` / `kimai_config.loginFormActive`
+  template accessors with `config(...)`; required for Kimai 2.57 compatibility.
 * [PR-32](https://github.com/itk-kimai/AarhusKommuneBundle/pull/32)
   2491: Updated Teamlead permissions documentation
 * [PR-29](https://github.com/itk-kimai/AarhusKommuneBundle/pull/30)
