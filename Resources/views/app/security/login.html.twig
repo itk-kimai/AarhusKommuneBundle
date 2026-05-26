@@ -22,7 +22,7 @@
 {% endblock %}
 
 {% block title %}
-    {% set meta_title = kimai_config.get('aarhuskommune.meta-title') %}
+    {% set meta_title = config('aarhuskommune.meta-title') %}
     {% if meta_title is not empty %}
         {{ meta_title|raw }}
     {% else %}
@@ -42,11 +42,11 @@
 
         <div class="card-body">
             <div class="row text-center">
-                {% set social_login_title = kimai_config.get('aarhuskommune.social_login_title') %}
+                {% set social_login_title = config('aarhuskommune.social_login_title') %}
                 {% if social_login_title is not empty %}
                     <h1>{{ social_login_title|raw }}</h1>
                 {% endif %}
-                {% if not kimai_config.loginFormActive %}
+                {% if not config('loginFormActive') %}
                     <h2 class="card-title text-center mb-4">{{ block('login_box_msg') }}</h2>
                 {% endif %}
                 <div class="col">
@@ -58,7 +58,7 @@
                 </div>
             </div>
         </div>
-        {% set login_message = kimai_config.get('aarhuskommune.login_message') %}
+        {% set login_message = config('aarhuskommune.login_message') %}
         {% if login_message is not empty %}
             <div class="card-body login-message">
                 {{ login_message|raw }}

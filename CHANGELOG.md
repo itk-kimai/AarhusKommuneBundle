@@ -7,12 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-05-26
+
+* [PR-37](https://github.com/itk-kimai/AarhusKommuneBundle/pull/37)
+  7596: Replace deprecated `kimai_config.get(...)` / `kimai_config.loginFormActive`
+  template accessors with `config(...)`; required for Kimai 2.57 compatibility.
+* [PR-36](https://github.com/itk-kimai/AarhusKommuneBundle/pull/36)
+  7596: Register plugin migrations in install command so
+  `kimai:bundle:aarhus_kommune:install` runs them automatically.
+
+## [1.3.0] - 2025-09-01
+
 * [PR-32](https://github.com/itk-kimai/AarhusKommuneBundle/pull/32)
   2491: Updated Teamlead permissions documentation
-* [PR-29](https://github.com/itk-kimai/AarhusKommuneBundle/pull/30)
-  Remove prerelease flag in release.yml.
 * [PR-31](https://github.com/itk-kimai/AarhusKommuneBundle/pull/31)
   Code cleanup
+* [PR-29](https://github.com/itk-kimai/AarhusKommuneBundle/pull/30)
+  Remove prerelease flag in release.yml.
 * [PR-28](https://github.com/itk-kimai/AarhusKommuneBundle/pull/28)
   Improved release script
 
@@ -75,7 +86,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * [PR-1](https://github.com/itk-dev/kimai-plugin-AarhusKommuneBundle/pull/1)
   Added Aarhus kommune plugin
 
-[Unreleased]: https://github.com/itk-dev/kimai-plugin-AarhusKommuneBundle/compare/1.2.0...HEAD
-[1.2.0]: https://github.com/itk-dev/kimai-plugin-AarhusKommuneBundle/compare/1.0.0...1.2.0
-[1.1.0]: https://github.com/itk-dev/kimai-plugin-AarhusKommuneBundle/compare/1.0.0...1.1.0
-[1.0.0]: https://github.com/itk-dev/kimai-plugin-AarhusKommuneBundle/releases/tag/1.0.0
+[Unreleased]: https://github.com/itk-kimai/AarhusKommuneBundle/compare/1.4.0...HEAD
+[1.4.0]: https://github.com/itk-kimai/AarhusKommuneBundle/compare/1.3.0...1.4.0
+[1.3.0]: https://github.com/itk-kimai/AarhusKommuneBundle/compare/1.2.0...1.3.0
+[1.2.0]: https://github.com/itk-kimai/AarhusKommuneBundle/compare/1.1.0...1.2.0
+[1.1.0]: https://github.com/itk-kimai/AarhusKommuneBundle/compare/1.0.0...1.1.0
+[1.0.0]: https://github.com/itk-kimai/AarhusKommuneBundle/releases/tag/1.0.0
