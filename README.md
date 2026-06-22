@@ -32,11 +32,9 @@ aarhus_kommune:
     # Web Accessibility Statement URL
     was_url: https://was.digst.dk/tid-aarhuskommune-dk
 
-    # language, timezone and theme come from Kimai's defaults.user.* config
-    # (see "User language" below); only the preferences Kimai has no default
-    # for are set here.
+    # The initial view. Language, timezone and theme are set under
+    # kimai.defaults.user.* (see "User language" below).
     user_defaults:
-        !php/const App\Entity\UserPreference::LOCALE: 'da'
         login_initial_view: 'quick_entry'
 
 # Set route on Tabler logo
@@ -74,8 +72,8 @@ redirect to the Web Accessibility Statement URL defined in `local.yaml`.
 
 New users (including those provisioned on first SAML login) get their `language`,
 `timezone` and `theme` from Kimai's native `defaults.user.*` configuration, while
-`locale` and the initial view come from the bundle's `user_defaults` (the two
-preferences Kimai has no default for). Set the Kimai defaults in `local.yaml`:
+the initial view comes from the bundle's `user_defaults`. The formatting locale
+follows the language. Set the Kimai defaults in `local.yaml`:
 
 ``` yaml
 # config/packages/local.yaml

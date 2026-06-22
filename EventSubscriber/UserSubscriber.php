@@ -11,7 +11,6 @@
 namespace KimaiPlugin\AarhusKommuneBundle\EventSubscriber;
 
 use App\Entity\User;
-use App\Entity\UserPreference;
 use App\Event\UserCreatePreEvent;
 use KimaiPlugin\AarhusKommuneBundle\Configuration\AarhusKommuneConfiguration;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -44,13 +43,12 @@ class UserSubscriber implements EventSubscriberInterface
             $user->setWizardAsSeen($wizard);
         }
 
-        // language, timezone and theme are applied by Kimai from its
-        // defaults.user.* configuration (UserService::createNewUser). Here we
-        // only set the preferences Kimai has no default for; their values are
-        // declared in the bundle configuration tree (DependencyInjection\Configuration).
+        // Kimai applies language, timezone and theme from defaults.user.*, and
+        // the formatting locale follows the language. Only login_initial_view,
+        // which Kimai has no default for, is set here (value from the bundle
+        // configuration tree).
         $defaults = $this->configuration->getUserDefaults();
 
-        $user->setLocale((string) $defaults[UserPreference::LOCALE]);
         $user->setPreferenceValue(self::LOGIN_INITIAL_VIEW, (string) $defaults[self::LOGIN_INITIAL_VIEW]);
     }
 }
