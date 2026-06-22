@@ -18,6 +18,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class UserSubscriber implements EventSubscriberInterface
 {
+    /**
+     * Preference key for a user's initial view after login.
+     * (Kimai does not define one)
+     */
+    public const LOGIN_INITIAL_VIEW = 'login_initial_view';
+
     public function __construct(
         private readonly AarhusKommuneConfiguration $configuration
     )
@@ -38,12 +44,13 @@ class UserSubscriber implements EventSubscriberInterface
             $user->setWizardAsSeen($wizard);
         }
 
+        // language, timezone and theme are applied by Kimai from its
+        // defaults.user.* configuration (UserService::createNewUser). Here we
+        // only set the preferences Kimai has no default for; their values are
+        // declared in the bundle configuration tree (DependencyInjection\Configuration).
         $defaults = $this->configuration->getUserDefaults();
 
-        $user->setLanguage($defaults[UserPreference::LANGUAGE] ?? 'da');
-        $user->setLocale($defaults[UserPreference::LOCALE] ?? 'da');
-        $user->setTimezone($defaults[UserPreference::TIMEZONE] ?? 'Europe/Copenhagen');
-        $user->setPreferenceValue(UserPreference::SKIN, $defaults[UserPreference::SKIN] ?? 'default');
-        $user->setPreferenceValue('login_initial_view', $defaults['login_initial_view'] ?? 'quick_entry');
+        $user->setLocale((string) $defaults[UserPreference::LOCALE]);
+        $user->setPreferenceValue(self::LOGIN_INITIAL_VIEW, (string) $defaults[self::LOGIN_INITIAL_VIEW]);
     }
 }
