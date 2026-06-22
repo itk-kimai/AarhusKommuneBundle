@@ -96,8 +96,7 @@ final readonly class LocaleRedirectSubscriber implements EventSubscriberInterfac
             return;
         }
 
-        // Regenerate the same route with the user's locale instead of rewriting
-        // the path by hand.
+        // Regenerate the route with the user's locale.
         $target = $this->urlGenerator->generate($route, array_merge($routeParams, ['_locale' => $language]));
 
         // Safety net: if _locale is only a route default (not a path segment),
