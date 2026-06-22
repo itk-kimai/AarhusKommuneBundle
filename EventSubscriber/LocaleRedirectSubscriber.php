@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
@@ -43,6 +44,7 @@ final readonly class LocaleRedirectSubscriber implements EventSubscriberInterfac
         private TokenStorageInterface $tokenStorage,
         private SystemConfiguration $systemConfiguration,
         private LocaleService $localeService,
+        private UrlGeneratorInterface $urlGenerator,
     )
     {
     }
@@ -82,35 +84,33 @@ final readonly class LocaleRedirectSubscriber implements EventSubscriberInterfac
             return;
         }
 
-        // The locale Symfony resolved for this request, taken from the {_locale}
-        // path segment on localized routes. On non-localized routes (/api,
-        // /auth/saml/...) it falls back to the application default; that is
-        // harmless because the anchored rewrite below only fires when the path
-        // actually starts with this locale.
-        $urlLocale = $request->getLocale();
-        if ('' === $urlLocale || $urlLocale === $language) {
+        // The router has already matched the route (RouterListener, priority 32),
+        // so its parameters carry the {_locale} taken from the path. Routes with
+        // no {_locale} parameter (/api, /auth/saml/...) are left untouched.
+        $route = $request->attributes->get('_route');
+        $routeParams = $request->attributes->get('_route_params', []);
+        if (!\is_string($route) || !\is_array($routeParams) || !\array_key_exists('_locale', $routeParams)) {
+            return;
+        }
+        if ($routeParams['_locale'] === $language) {
             return;
         }
 
-        // Rewrite the leading locale segment (e.g. /en/quick_entry/), preserving
-        // the rest of the path. This anchored match is the real guard: a path
-        // that does not start with the locale segment yields no change and we
-        // bail, keeping the URL as the single source of truth.
-        $path = $request->getPathInfo();
-        $count = 0;
-        $newPath = preg_replace(
-            '#^/' . preg_quote($urlLocale, '#') . '(?=/|$)#',
-            '/' . $language,
-            $path,
-            1,
-            $count
-        );
-        if (null === $newPath || 0 === $count) {
+        // Regenerate the same route with the user's locale instead of rewriting
+        // the path by hand.
+        $target = $this->urlGenerator->generate($route, array_merge($routeParams, ['_locale' => $language]));
+
+        // Safety net: if _locale is only a route default (not a path segment),
+        // generate() appends it as a query parameter and the path is unchanged,
+        // so redirecting would loop. Only redirect when the path actually moves.
+        if (parse_url($target, PHP_URL_PATH) === $request->getPathInfo()) {
             return;
         }
 
         $queryString = $request->getQueryString();
-        $target = $newPath . (null !== $queryString ? '?' . $queryString : '');
+        if (null !== $queryString) {
+            $target .= '?' . $queryString;
+        }
 
         $event->setResponse(new RedirectResponse($target));
     }
