@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-* [PR-XX](https://github.com/itk-kimai/AarhusKommuneBundle/pull/XX)
+* [PR-39](https://github.com/itk-kimai/AarhusKommuneBundle/pull/39)
   7596: Force the UI language to follow the user's language preference by
   redirecting authenticated requests whose URL locale differs, and source
   new-user language, timezone and theme from Kimai's `defaults.user.*`
