@@ -108,7 +108,9 @@ final readonly class LocaleRedirectSubscriber implements EventSubscriberInterfac
 
         $queryString = $request->getQueryString();
         if (null !== $queryString) {
-            $target .= '?' . $queryString;
+            // generate() may already have appended a query string (route
+            // defaults that are not path segments), so pick the right separator.
+            $target .= (str_contains($target, '?') ? '&' : '?') . $queryString;
         }
 
         $event->setResponse(new RedirectResponse($target));
