@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-* [PR-XX](https://github.com/itk-kimai/AarhusKommuneBundle/pull/XX)
+* [PR-40](https://github.com/itk-kimai/AarhusKommuneBundle/pull/40)
   * Align dev tooling with the itk-dev docker templates: PHP 8.4
     `docker-compose.yml`, a Taskfile, and per-concern CI workflows.
   * Build releases via a tag-triggered GitHub release workflow; drop
