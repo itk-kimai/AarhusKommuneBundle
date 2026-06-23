@@ -11,13 +11,18 @@
 namespace KimaiPlugin\AarhusKommuneBundle\EventSubscriber;
 
 use App\Entity\User;
-use App\Entity\UserPreference;
 use App\Event\UserCreatePreEvent;
 use KimaiPlugin\AarhusKommuneBundle\Configuration\AarhusKommuneConfiguration;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class UserSubscriber implements EventSubscriberInterface
 {
+    /**
+     * Preference key for a user's initial view after login.
+     * (Kimai does not define one)
+     */
+    public const LOGIN_INITIAL_VIEW = 'login_initial_view';
+
     public function __construct(
         private readonly AarhusKommuneConfiguration $configuration
     )
@@ -38,12 +43,12 @@ class UserSubscriber implements EventSubscriberInterface
             $user->setWizardAsSeen($wizard);
         }
 
+        // Kimai applies language, timezone and theme from defaults.user.*, and
+        // the formatting locale follows the language. Only login_initial_view,
+        // which Kimai has no default for, is set here (value from the bundle
+        // configuration tree).
         $defaults = $this->configuration->getUserDefaults();
 
-        $user->setLanguage($defaults[UserPreference::LANGUAGE] ?? 'da');
-        $user->setLocale($defaults[UserPreference::LOCALE] ?? 'da');
-        $user->setTimezone($defaults[UserPreference::TIMEZONE] ?? 'Europe/Copenhagen');
-        $user->setPreferenceValue(UserPreference::SKIN, $defaults[UserPreference::SKIN] ?? 'default');
-        $user->setPreferenceValue('login_initial_view', $defaults['login_initial_view'] ?? 'quick_entry');
+        $user->setPreferenceValue(self::LOGIN_INITIAL_VIEW, (string) $defaults[self::LOGIN_INITIAL_VIEW]);
     }
 }

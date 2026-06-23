@@ -32,18 +32,23 @@ aarhus_kommune:
     # Web Accessibility Statement URL
     was_url: https://was.digst.dk/tid-aarhuskommune-dk
 
+    # The initial view. Language, timezone and theme are set under
+    # kimai.defaults.user.* (see "User language" below).
     user_defaults:
-        # The default values.
-        !php/const App\Entity\UserPreference::LANGUAGE: 'da'
-        !php/const App\Entity\UserPreference::LOCALE: 'da'
-        !php/const App\Entity\UserPreference::TIMEZONE: 'Europe/Copenhagen'
-        !php/const App\Entity\UserPreference::SKIN: 'default'
         login_initial_view: 'quick_entry'
 
 # Set route on Tabler logo
 tabler:
     routes:
         tabler_welcome: quick_entry
+
+# Defaults for newly provisioned users that the bundle defers to Kimai for.
+kimai:
+    defaults:
+        user:
+            language: da
+            timezone: Europe/Copenhagen
+            theme: default
 ```
 
 Use `bin/console debug:config AarhusKommuneBundle` to check the active configuration.
@@ -62,6 +67,31 @@ login form.
 
 The path `/was` (route name: `aarhuskommune_was`) or `/{_locale}/was` (route name: `aarhuskommune_was_locale`) will
 redirect to the Web Accessibility Statement URL defined in `local.yaml`.
+
+### User language
+
+New users (including those provisioned on first SAML login) get their `language`,
+`timezone` and `theme` from Kimai's native `defaults.user.*` configuration, while
+the initial view comes from the bundle's `user_defaults`. The formatting locale
+follows the language. Set the Kimai defaults in `local.yaml`:
+
+``` yaml
+# config/packages/local.yaml
+kimai:
+    defaults:
+        user:
+            language: da
+            timezone: Europe/Copenhagen
+            theme: default
+```
+
+Kimai derives the UI language solely from the `{_locale}` segment of the URL, so a
+stale `/en/` bookmark, browser history or a post-login target URL renders the wrong
+language even when the user's language preference says otherwise. To prevent this,
+authenticated `GET` requests whose URL locale does not match the user's preferred
+language are redirected to the same path with the correct locale prefix, keeping the
+URL as the source of truth. When a user has no explicit language preference, the
+redirect falls back to the same `kimai.defaults.user.language` value.
 
 ### App template overrides
 
