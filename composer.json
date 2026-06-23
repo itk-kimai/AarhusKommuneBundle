@@ -3,7 +3,6 @@
     "description": "A Kimai plugin for Aarhus Kommune",
     "license": "MIT",
     "type": "kimai-plugin",
-    "version": "0.0.0",
     "keywords": [
         "kimai",
         "kimai-plugin"
@@ -19,12 +18,12 @@
         "ergebnis/composer-normalize": "^2.43",
         "friendsofphp/php-cs-fixer": "^3.0",
         "kimai/kimai": "dev-main",
-        "phpstan/phpstan": "^1.0",
-        "phpstan/phpstan-doctrine": "^1.0",
-        "phpstan/phpstan-symfony": "^1.0",
+        "phpstan/phpstan": "^2.0",
+        "phpstan/phpstan-doctrine": "^2.0",
+        "phpstan/phpstan-symfony": "^2.0",
         "symfony/console": "^6.0",
         "symfony/event-dispatcher": "^6.0",
-        "vincentlanglet/twig-cs-fixer": "^2.11"
+        "vincentlanglet/twig-cs-fixer": "^4.0"
     },
     "autoload": {
         "psr-4": {
@@ -56,7 +55,7 @@
             "@code-analysis/phpstan"
         ],
         "code-analysis/phpstan": [
-            "phpstan analyse . --configuration=phpstan.neon --level=8"
+            "phpstan analyse . --configuration=phpstan.neon"
         ],
         "coding-standards-apply": [
             "@coding-standards-apply/php-cs-fixer",
