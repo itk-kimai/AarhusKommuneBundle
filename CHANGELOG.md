@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* [PR-40](https://github.com/itk-kimai/AarhusKommuneBundle/pull/40)
+  * Align dev tooling with the itk-dev docker templates: PHP 8.4
+    `docker-compose.yml`, a Taskfile, and per-concern CI workflows.
+  * Build releases via a tag-triggered GitHub release workflow; drop
+    `bin/create-release`, `rsync` and the custom `Dockerfile`.
+  * Omit the `version` field from `composer.json` (set at release build) so
+    `composer validate --strict` passes.
+  * Use the installed plugin version as the stylesheet cache-buster instead of
+    a `%%VERSION%%` placeholder.
+  * Upgrade PHPStan to `^2.0` and twig-cs-fixer to `^4.0`.
 * [PR-39](https://github.com/itk-kimai/AarhusKommuneBundle/pull/39)
   7596: Force the UI language to follow the user's language preference by
   redirecting authenticated requests whose URL locale differs, and source

@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------------------------
 
 table_storage:
-    table_name: bundle_migration_aarhus_kommune
+  table_name: bundle_migration_aarhus_kommune
 
 migrations_paths:
-    KimaiPlugin\AarhusKommuneBundle\Migrations: var/plugins/AarhusKommuneBundle/Migrations
+  KimaiPlugin\AarhusKommuneBundle\Migrations: var/plugins/AarhusKommuneBundle/Migrations
