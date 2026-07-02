@@ -10,8 +10,8 @@
 
 namespace KimaiPlugin\AarhusKommuneBundle\DependencyInjection;
 
-use App\Entity\UserPreference;
 use KimaiPlugin\AarhusKommuneBundle\Configuration\AarhusKommuneConfiguration;
+use KimaiPlugin\AarhusKommuneBundle\EventSubscriber\UserSubscriber;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -50,21 +50,13 @@ class Configuration implements ConfigurationInterface
                     ->info('Web Accessibility Statement URL')
                 ->end()
 
+                // language, timezone and theme come from Kimai's native
+                // defaults.user.* configuration; the formatting locale follows
+                // the language. Only login_initial_view, which Kimai has no
+                // default for, lives here.
                 ->arrayNode('user_defaults')
                     ->children()
-                        ->scalarNode(UserPreference::LANGUAGE)
-                            ->defaultValue('da')
-                        ->end()
-                        ->scalarNode(UserPreference::LOCALE)
-                            ->defaultValue('da')
-                        ->end()
-                        ->scalarNode(UserPreference::TIMEZONE)
-                            ->defaultValue('Europe/Copenhagen')
-                        ->end()
-                        ->scalarNode(UserPreference::SKIN)
-                            ->defaultValue('default')
-                        ->end()
-                        ->scalarNode('login_initial_view')
+                        ->scalarNode(UserSubscriber::LOGIN_INITIAL_VIEW)
                             ->defaultValue('quick_entry')
                         ->end()
                     ->end()

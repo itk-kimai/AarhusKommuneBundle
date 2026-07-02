@@ -32,18 +32,23 @@ aarhus_kommune:
     # Web Accessibility Statement URL
     was_url: https://was.digst.dk/tid-aarhuskommune-dk
 
+    # The initial view. Language, timezone and theme are set under
+    # kimai.defaults.user.* (see "User language" below).
     user_defaults:
-        # The default values.
-        !php/const App\Entity\UserPreference::LANGUAGE: 'da'
-        !php/const App\Entity\UserPreference::LOCALE: 'da'
-        !php/const App\Entity\UserPreference::TIMEZONE: 'Europe/Copenhagen'
-        !php/const App\Entity\UserPreference::SKIN: 'default'
         login_initial_view: 'quick_entry'
 
 # Set route on Tabler logo
 tabler:
     routes:
         tabler_welcome: quick_entry
+
+# Defaults for newly provisioned users that the bundle defers to Kimai for.
+kimai:
+    defaults:
+        user:
+            language: da
+            timezone: Europe/Copenhagen
+            theme: default
 ```
 
 Use `bin/console debug:config AarhusKommuneBundle` to check the active configuration.
@@ -62,6 +67,31 @@ login form.
 
 The path `/was` (route name: `aarhuskommune_was`) or `/{_locale}/was` (route name: `aarhuskommune_was_locale`) will
 redirect to the Web Accessibility Statement URL defined in `local.yaml`.
+
+### User language
+
+New users (including those provisioned on first SAML login) get their `language`,
+`timezone` and `theme` from Kimai's native `defaults.user.*` configuration, while
+the initial view comes from the bundle's `user_defaults`. The formatting locale
+follows the language. Set the Kimai defaults in `local.yaml`:
+
+``` yaml
+# config/packages/local.yaml
+kimai:
+    defaults:
+        user:
+            language: da
+            timezone: Europe/Copenhagen
+            theme: default
+```
+
+Kimai derives the UI language solely from the `{_locale}` segment of the URL, so a
+stale `/en/` bookmark, browser history or a post-login target URL renders the wrong
+language even when the user's language preference says otherwise. To prevent this,
+authenticated `GET` requests whose URL locale does not match the user's preferred
+language are redirected to the same path with the correct locale prefix, keeping the
+URL as the source of truth. When a user has no explicit language preference, the
+redirect falls back to the same `kimai.defaults.user.language` value.
 
 ### App template overrides
 
@@ -108,25 +138,45 @@ bin/console assets:install --symlink
 
 to [symlink](https://en.wikipedia.org/wiki/Symbolic_link) the `public` folder.
 
-### Coding standards
+### Coding standards and tooling
+
+A `docker-compose.yml` file with a PHP 8.4 image is included in this project.
+A [Taskfile](https://taskfile.dev/) is used to run common development tasks.
+
+Set up the project (start the containers and install dependencies) with
 
 ``` shell
-docker compose build
-docker compose run --rm php composer install
-docker compose run --rm php composer normalize
-docker compose run --rm php composer coding-standards-apply
-docker compose run --rm php composer coding-standards-check
+task setup
 ```
 
-``` shell
-docker run --rm --volume "$(pwd):/md" peterdavehello/markdownlint markdownlint --ignore LICENSE.md --ignore vendor/ '**/*.md' --fix
-docker run --rm --volume "$(pwd):/md" peterdavehello/markdownlint markdownlint --ignore LICENSE.md --ignore vendor/ '**/*.md'
-```
+Run all CI checks locally (coding standards, static analysis):
 
 ``` shell
-docker compose run --rm php composer install
-docker compose run --rm php composer code-analysis
+task pr:actions
 ```
+
+Check all coding standards (PHP, Twig, Markdown, YAML, composer):
+
+``` shell
+task lint
+```
+
+Fix coding standards:
+
+``` shell
+task lint:php:fix
+task lint:twig:fix
+task lint:markdown:fix
+task lint:yaml:fix
+```
+
+Run static analysis:
+
+``` shell
+task analyze:php
+```
+
+Run `task --list` to see all available tasks.
 
 _Note_: During development you should remove the `vendor/` folder to not confuse Kimai's autoloading.
 
@@ -157,12 +207,12 @@ We set these permissions for the teamlead role. Everything else is disabled.
 
 ## Release
 
-Whenever something is pushed to the `develop` branch, e.g. when merging a pull request, a [`develop`
-pre-release](https://github.com/itk-kimai/kimai-plugin-AarhusKommuneBundle/releases/tag/release-develop ) is made (cf.
-[.github/workflows/release-develop.yml](.github/workflows/release-develop.yml)).
+A GitHub release is created when a tag matching `*.*.*` is pushed (cf. the
+[`Create Github Release` workflow](.github/workflows/create-release.yaml)).
 
-To test creating a release, run
-
-``` shell
-docker compose build && docker compose run --rm php bin/create-release dev-test
-```
+The workflow builds a versioned `AarhusKommuneBundle-<tag>.tar.gz` archive with
+`git archive` and attaches it to the release. The tag is written into
+`composer.json` so Kimai reports the correct plugin version (and the plugin
+uses it as the stylesheet cache-buster), while development tooling and CI
+config are left out via `export-ignore` in `.gitattributes`. Download this
+archive and extract it to `var/plugins/`.
