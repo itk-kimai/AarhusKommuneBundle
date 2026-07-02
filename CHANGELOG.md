@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* [PR-42](https://github.com/itk-kimai/AarhusKommuneBundle/pull/42)
+  Require PHP `>=8.4`, drop the `config.platform` pin and remove the custom
+  `composer.json` scripts (covered by the Taskfile).
+
 ## [1.5.0] - 2026-07-02
 
 * [PR-40](https://github.com/itk-kimai/AarhusKommuneBundle/pull/40)
