@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-07-02
+
 * [PR-40](https://github.com/itk-kimai/AarhusKommuneBundle/pull/40)
   * Align dev tooling with the itk-dev docker templates: PHP 8.4
     `docker-compose.yml`, a Taskfile, and per-concern CI workflows.
@@ -102,7 +104,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * [PR-1](https://github.com/itk-dev/kimai-plugin-AarhusKommuneBundle/pull/1)
   Added Aarhus kommune plugin
 
-[Unreleased]: https://github.com/itk-kimai/AarhusKommuneBundle/compare/1.4.0...HEAD
+[Unreleased]: https://github.com/itk-kimai/AarhusKommuneBundle/compare/1.5.0...HEAD
+[1.5.0]: https://github.com/itk-kimai/AarhusKommuneBundle/compare/1.4.0...1.5.0
 [1.4.0]: https://github.com/itk-kimai/AarhusKommuneBundle/compare/1.3.0...1.4.0
 [1.3.0]: https://github.com/itk-kimai/AarhusKommuneBundle/compare/1.2.0...1.3.0
 [1.2.0]: https://github.com/itk-kimai/AarhusKommuneBundle/compare/1.1.0...1.2.0
