@@ -39,6 +39,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `phpstan/extension-installer` is dropped, since PHPStan aborts when a neon
   file is included twice.
 
+* [PR-46](https://github.com/itk-kimai/AarhusKommuneBundle/pull/46)
+  Cover the classes the testing plan still listed as untested: 45 tests over
+  `MenuSubscriber`, `UserSubscriber`, `WasController`,
+  `AarhusKommuneConfiguration` and `TimesheetHelper`, bringing the suite to 61
+  tests and 91 assertions. All of them build Kimai's `final`
+  `SystemConfiguration`, `AarhusKommuneConfiguration` and `TimesheetService`
+  for real and double only the repositories, so no database is needed. Writing
+  them turned up one bug, which is fixed rather than asserted:
+  `UserSubscriber` read `user_defaults.login_initial_view` unguarded, so a
+  `local.yaml` without a `user_defaults` node raised "Undefined array key" and
+  wrote a blank `login_initial_view` preference on every user Kimai created,
+  SAML provisioning included. The node has no `addDefaultsIfNotSet()`, so there
+  is nothing to read when it is left out; the preference is now left untouched
+  and Kimai decides where the user lands.
+
 ## [1.5.0] - 2026-07-02
 
 * [PR-40](https://github.com/itk-kimai/AarhusKommuneBundle/pull/40)
