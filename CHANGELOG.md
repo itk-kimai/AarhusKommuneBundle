@@ -9,7 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * [PR-42](https://github.com/itk-kimai/AarhusKommuneBundle/pull/42)
   Require PHP `>=8.4`, drop the `config.platform` pin and remove the custom
-  `composer.json` scripts (covered by the Taskfile).
+  `composer.json` scripts (covered by the Taskfile). Raise
+  `extra.kimai.require` from `21800` to `26100`: the plugin has needed the
+  `config(...)` Twig function since 1.4.0 (Kimai 2.57), and its forked core
+  templates track 2.61's markup, so 2.18 was never a real floor. Both
+  declarations now state the only install this runs on, matching
+  `AakSamlBundle`.
 
 ## [1.5.0] - 2026-07-02
 
