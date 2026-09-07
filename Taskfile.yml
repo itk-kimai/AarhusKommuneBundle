@@ -145,9 +145,15 @@ tasks:
 
   # CI
 
+  test:
+    desc: Run tests
+    cmds:
+      - "{{.PHP}} vendor/bin/phpunit"
+
   pr:actions:
     desc: Run all CI checks locally
     cmds:
       - task: composer:check
       - task: lint
       - task: analyze:php
+      - task: test

@@ -29,9 +29,13 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  * Kimai derives the UI translation language solely from the {_locale} route
  * parameter, so a stale /en/ bookmark, browser history or the post-login
  * target URL renders the wrong language even when the user's preference says
- * otherwise. This subscriber redirects authenticated GET requests whose URL
- * locale does not match the user's preferred language to the same path with
- * the correct locale prefix.
+ * otherwise. This subscriber redirects GET requests whose URL locale does not
+ * match the wanted language to the same path with the correct locale prefix.
+ *
+ * For an authenticated user the wanted language is their own preference. For an
+ * anonymous visitor it is the configured default, because Kimai negotiates
+ * their locale from the browser's Accept-Language instead and has no notion of
+ * a language the installation serves to visitors.
  *
  * When a user has no explicit language preference, Kimai's User::getLanguage()
  * silently falls back to the hard-coded 'en'. To avoid that, the fallback here
@@ -72,12 +76,15 @@ final readonly class LocaleRedirectSubscriber implements EventSubscriberInterfac
             return;
         }
 
+        // Anonymous visitors get the configured default language too. Kimai's
+        // own RedirectToLocaleSubscriber negotiates their locale from
+        // Accept-Language against every enabled locale, so a German browser is
+        // served a German login page and one sending no header gets Kimai's
+        // hard-coded 'en'. Neither is right for a Danish-only service.
         $user = $this->tokenStorage->getToken()?->getUser();
-        if (!$user instanceof User) {
-            return;
-        }
-
-        $language = $this->resolveLanguage($user);
+        $language = $user instanceof User
+            ? $this->resolveLanguage($user)
+            : $this->systemConfiguration->getUserDefaultLanguage();
 
         // Never redirect to a locale Kimai cannot route/translate.
         if (!$this->localeService->isKnownLocale($language)) {
@@ -119,7 +126,8 @@ final readonly class LocaleRedirectSubscriber implements EventSubscriberInterfac
     /**
      * The user's preferred language, falling back to the configured default
      * (kimai.defaults.user.language) when no preference is set, instead of
-     * Kimai's hard-coded 'en'.
+     * Kimai's hard-coded 'en'. That same default is what anonymous visitors
+     * get, so both paths resolve to one source of truth.
      */
     private function resolveLanguage(User $user): string
     {

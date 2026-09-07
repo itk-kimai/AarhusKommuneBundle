@@ -16,6 +16,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   declarations now state the only install this runs on, matching
   `AakSamlBundle`.
 
+* [PR-43](https://github.com/itk-kimai/AarhusKommuneBundle/pull/43)
+  Send anonymous visitors to the configured default language.
+  `LocaleRedirectSubscriber` only acted on authenticated requests, so Kimai
+  negotiated the locale for everyone else from the browser's `Accept-Language`:
+  a German browser was served a German login page and one sending no header got
+  Kimai's hard-coded `en`. Adds a PHPUnit harness (`phpunit.xml.dist`,
+  `task test`, a `Test` workflow) and 16 tests covering the subscriber.
+
 ## [1.5.0] - 2026-07-02
 
 * [PR-40](https://github.com/itk-kimai/AarhusKommuneBundle/pull/40)
