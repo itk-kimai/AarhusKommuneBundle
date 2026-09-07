@@ -152,11 +152,18 @@ final class AarhusKommuneConfigurationTest extends TestCase
         self::assertSame($activity, $configuration->getPrimaryActivity($project));
     }
 
-    public function testAnUnconfiguredPrimaryActivityIsNull(): void
+    public function testAnUnconfiguredPrimaryActivityIsNotLookedUp(): void
     {
-        $configuration = $this->configuration([]);
+        // The repository would answer with an activity; a null result proves the
+        // lookup never happened.
+        $project = $this->project('Aarhus Kommune');
 
-        self::assertNull($configuration->getPrimaryActivity($this->project('Aarhus Kommune')));
+        $configuration = $this->configuration(
+            [],
+            activityRepository: $this->activityRepository(42, $this->activity('Tid', $project))
+        );
+
+        self::assertNull($configuration->getPrimaryActivity($project));
     }
 
     public function testAnActivityFromAnotherProjectIsRefused(): void
