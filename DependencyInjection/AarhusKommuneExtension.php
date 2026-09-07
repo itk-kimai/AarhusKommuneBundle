@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\Loader;
 class AarhusKommuneExtension extends AbstractPluginExtension
 {
     /**
-     * @param array<string, mixed> $configs
+     * @param array<array<mixed>> $configs
      * @param ContainerBuilder $container
      * @throws \Exception
      */

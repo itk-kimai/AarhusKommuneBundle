@@ -119,7 +119,7 @@ final class LocaleRedirectSubscriberTest extends TestCase
     public function testSubRequestsAreIgnored(): void
     {
         $event = new RequestEvent(
-            $this->createStub(HttpKernelInterface::class),
+            self::createStub(HttpKernelInterface::class),
             $this->request('/en/login', 'login', ['_locale' => 'en']),
             HttpKernelInterface::SUB_REQUEST
         );
@@ -202,7 +202,7 @@ final class LocaleRedirectSubscriberTest extends TestCase
         ?string $generated = null,
     ): RequestEvent {
         $event = new RequestEvent(
-            $this->createStub(HttpKernelInterface::class),
+            self::createStub(HttpKernelInterface::class),
             $request,
             HttpKernelInterface::MAIN_REQUEST
         );
@@ -219,12 +219,12 @@ final class LocaleRedirectSubscriberTest extends TestCase
     ): LocaleRedirectSubscriber {
         $tokenStorage = new TokenStorage();
         if (null !== $user) {
-            $token = $this->createStub(TokenInterface::class);
+            $token = self::createStub(TokenInterface::class);
             $token->method('getUser')->willReturn($user);
             $tokenStorage->setToken($token);
         }
 
-        $urlGenerator = $this->createStub(UrlGeneratorInterface::class);
+        $urlGenerator = self::createStub(UrlGeneratorInterface::class);
         $urlGenerator->method('generate')->willReturnCallback(
             // Stand in for the router: swap the locale into the path, which is
             // what generating a localized Kimai route does.
@@ -257,7 +257,7 @@ final class LocaleRedirectSubscriberTest extends TestCase
 
     private function systemConfiguration(string $defaultLanguage): SystemConfiguration
     {
-        $loader = $this->createStub(ConfigLoaderInterface::class);
+        $loader = self::createStub(ConfigLoaderInterface::class);
         $loader->method('getConfigurations')->willReturn([]);
 
         // Settings are a flat, dot-keyed array.

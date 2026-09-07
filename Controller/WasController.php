@@ -28,7 +28,7 @@ final class WasController extends AbstractController
     {
         $url = $this->configuration->getWasUrl();
 
-        if (empty($url)) {
+        if (null === $url) {
             throw new NotFoundHttpException();
         }
 
