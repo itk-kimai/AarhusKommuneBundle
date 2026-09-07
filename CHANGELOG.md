@@ -24,6 +24,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   Kimai's hard-coded `en`. Adds a PHPUnit harness (`phpunit.xml.dist`,
   `task test`, a `Test` workflow) and 16 tests covering the subscriber.
 
+* [PR-44](https://github.com/itk-kimai/AarhusKommuneBundle/pull/44)
+  Raise PHPStan to level 9 with `bleedingEdge`, `phpstan-strict-rules` and
+  `phpstan-deprecation-rules`, matching Kimai's own reference plugins. The 12
+  errors that surfaced are fixed in the code, not silenced:
+  `AarhusKommuneConfiguration` splits its one `mixed`-returning lookup into a
+  scalar and an array helper, so `getWasUrl()` narrows to a real `?string` and
+  the never-taken `?? []` fallbacks are gone; `WasController` drops `empty()`;
+  `AarhusKommuneExtension::load()` documents the `$configs` type its interface
+  declares; and the subscriber tests call `createStub()` statically. The one
+  `ignoreErrors` entry is scoped to a single line and names its cause: Kimai's
+  `LocaleService::DEFAULT_SETTINGS` carries an `rtl` key that the constructor's
+  own `@param` shape omits. The extensions are included explicitly and
+  `phpstan/extension-installer` is dropped, since PHPStan aborts when a neon
+  file is included twice.
+
 ## [1.5.0] - 2026-07-02
 
 * [PR-40](https://github.com/itk-kimai/AarhusKommuneBundle/pull/40)
