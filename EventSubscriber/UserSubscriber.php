@@ -48,7 +48,15 @@ class UserSubscriber implements EventSubscriberInterface
         // which Kimai has no default for, is set here (value from the bundle
         // configuration tree).
         $defaults = $this->configuration->getUserDefaults();
+        $initialView = $defaults[self::LOGIN_INITIAL_VIEW] ?? null;
 
-        $user->setPreferenceValue(self::LOGIN_INITIAL_VIEW, (string) $defaults[self::LOGIN_INITIAL_VIEW]);
+        // The configuration tree defaults login_initial_view, but only once
+        // user_defaults itself appears in local.yaml: the node has no
+        // addDefaultsIfNotSet(), so leaving it out leaves nothing to read.
+        // Kimai's own behaviour then decides where the user lands, which beats
+        // writing a blank preference.
+        if (\is_scalar($initialView) && '' !== (string) $initialView) {
+            $user->setPreferenceValue(self::LOGIN_INITIAL_VIEW, (string) $initialView);
+        }
     }
 }
