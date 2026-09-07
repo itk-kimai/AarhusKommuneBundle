@@ -24,7 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   Kimai's hard-coded `en`. Adds a PHPUnit harness (`phpunit.xml.dist`,
   `task test`, a `Test` workflow) and 16 tests covering the subscriber.
 
-* [PR-44](https://github.com/itk-kimai/AarhusKommuneBundle/pull/44)
+* [PR-45](https://github.com/itk-kimai/AarhusKommuneBundle/pull/45)
   Raise PHPStan to level 9 with `bleedingEdge`, `phpstan-strict-rules` and
   `phpstan-deprecation-rules`, matching Kimai's own reference plugins. The 12
   errors that surfaced are fixed in the code, not silenced:
