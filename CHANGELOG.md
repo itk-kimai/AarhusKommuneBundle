@@ -39,7 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `phpstan/extension-installer` is dropped, since PHPStan aborts when a neon
   file is included twice.
 
-* [PR-45](https://github.com/itk-kimai/AarhusKommuneBundle/pull/45)
+* [PR-46](https://github.com/itk-kimai/AarhusKommuneBundle/pull/46)
   Cover the classes the testing plan still listed as untested: 45 tests over
   `MenuSubscriber`, `UserSubscriber`, `WasController`,
   `AarhusKommuneConfiguration` and `TimesheetHelper`, bringing the suite to 61
