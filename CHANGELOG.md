@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* [PR-47](https://github.com/itk-kimai/AarhusKommuneBundle/pull/47)
+  Update the GitHub actions to their current versions: `actions/checkout@v7` everywhere, which the
+  deprecated Node 20 runtime forced anyway. Re-copy the `changelog`, `markdown`, `yaml` and `composer`
+  workflows from the ITK templates, which also brings the push path filters they now carry and
+  `composer audit --locked` in place of a full `composer install` followed by `composer audit`.
+
 * [PR-42](https://github.com/itk-kimai/AarhusKommuneBundle/pull/42)
   Require PHP `>=8.4`, drop the `config.platform` pin and remove the custom
   `composer.json` scripts (covered by the Taskfile). Raise
