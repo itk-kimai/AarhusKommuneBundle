@@ -2,6 +2,8 @@
 
 ## Installation
 
+Requires Kimai >= 2.61 (enforced via `extra.kimai.require`) and PHP >= 8.4.
+
 Download [a release](https://github.com/itk-kimai/AarhusKommuneBundle/releases) and extract it to `var/plugins/`.
 
 ```shell
