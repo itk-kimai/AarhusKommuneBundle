@@ -38,13 +38,22 @@
 {% endblock %}
 
 {% block page_content_after %}
+    {# Closes the <section> @App/base.html.twig opens in `page_content_before`,
+       and triggers the event plugins hang content off. Both belong to the block
+       we replace, so they have to be repeated here. #}
+    </section>
+    {% set event = trigger(constant('App\\Event\\ThemeEvent::CONTENT_AFTER')) %}
+    {{ event.content|raw }}
+    {# One help URL for the whole site, from the system configuration, in place
+       of Kimai's per-page `page_setup.help`. The markup follows the core block
+       so `help.scss` styles it; the label is the bare word, because the link is
+       the same on every page. #}
     {% set help_url = config('aarhuskommune.help_url') %}
     {% if help_url|default(false) %}
-        <div class="float-help">
-            <a href="{{ help_url }}" target="_blank" accesskey="h" title="{{ 'help'|trans }}">
-                <i class="fas fa-question"></i>
-            </a>
-        </div>
+        <a class="float-help btn btn-primary" href="{{ help_url }}" target="_blank" rel="noopener" accesskey="h">
+            <i class="fas fa-question"></i>
+            <span class="float-help-label"><span>{{ 'help'|trans }}</span></span>
+        </a>
     {% endif %}
     <div class="mb-4"></div>
 {% endblock %}

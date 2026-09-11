@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* [PR-XX](https://github.com/itk-kimai/AarhusKommuneBundle/pull/XX)
+  Follow Kimai 2.66's rebuilt help button in the `base.html.twig` override: the anchor carries
+  `float-help btn btn-primary` and the hover label, which `help.scss` no longer styles as the old
+  `<div>` wrapper. Restore the `</section>` and the `ThemeEvent::CONTENT_AFTER` trigger the override
+  had dropped, so pages close their content section and plugins hooking that event render again.
+
 ## [1.5.0] - 2026-07-02
 
 * [PR-40](https://github.com/itk-kimai/AarhusKommuneBundle/pull/40)
