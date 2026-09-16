@@ -7,63 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.0] - 2026-09-16
+
 * [PR-48](https://github.com/itk-kimai/AarhusKommuneBundle/pull/48)
-  Follow Kimai 2.66's rebuilt help button in the `base.html.twig` override: the anchor carries
-  `float-help btn btn-primary` and the hover label, which `help.scss` no longer styles as the old
-  `<div>` wrapper. Restore the `</section>` and the `ThemeEvent::CONTENT_AFTER` trigger the override
-  had dropped, so pages close their content section and plugins hooking that event render again.
+  * Follow Kimai 2.66's rebuilt help button in the `base.html.twig` override, and restore the
+    `</section>` and the `ThemeEvent::CONTENT_AFTER` trigger the override had dropped.
+  * Raise `extra.kimai.require` to `26600`: the override now emits the markup 2.66's `help.scss`
+    styles, and no earlier release has rules for it.
 * [PR-47](https://github.com/itk-kimai/AarhusKommuneBundle/pull/47)
-  Update the GitHub actions to their current versions: `actions/checkout@v7` everywhere, which the
-  deprecated Node 20 runtime forced anyway. Re-copy the `changelog`, `markdown`, `yaml` and `composer`
-  workflows from the ITK templates, which also brings the push path filters they now carry and
-  `composer audit --locked` in place of a full `composer install` followed by `composer audit`.
-
-* [PR-42](https://github.com/itk-kimai/AarhusKommuneBundle/pull/42)
-  Require PHP `>=8.4`, drop the `config.platform` pin and remove the custom
-  `composer.json` scripts (covered by the Taskfile). Raise
-  `extra.kimai.require` from `21800` to `26100`: the plugin has needed the
-  `config(...)` Twig function since 1.4.0 (Kimai 2.57), and its forked core
-  templates track 2.61's markup, so 2.18 was never a real floor. Both
-  declarations now state the only install this runs on, matching
-  `AakSamlBundle`.
-
-* [PR-43](https://github.com/itk-kimai/AarhusKommuneBundle/pull/43)
-  Send anonymous visitors to the configured default language.
-  `LocaleRedirectSubscriber` only acted on authenticated requests, so Kimai
-  negotiated the locale for everyone else from the browser's `Accept-Language`:
-  a German browser was served a German login page and one sending no header got
-  Kimai's hard-coded `en`. Adds a PHPUnit harness (`phpunit.xml.dist`,
-  `task test`, a `Test` workflow) and 16 tests covering the subscriber.
-
-* [PR-45](https://github.com/itk-kimai/AarhusKommuneBundle/pull/45)
-  Raise PHPStan to level 9 with `bleedingEdge`, `phpstan-strict-rules` and
-  `phpstan-deprecation-rules`, matching Kimai's own reference plugins. The 12
-  errors that surfaced are fixed in the code, not silenced:
-  `AarhusKommuneConfiguration` splits its one `mixed`-returning lookup into a
-  scalar and an array helper, so `getWasUrl()` narrows to a real `?string` and
-  the never-taken `?? []` fallbacks are gone; `WasController` drops `empty()`;
-  `AarhusKommuneExtension::load()` documents the `$configs` type its interface
-  declares; and the subscriber tests call `createStub()` statically. The one
-  `ignoreErrors` entry is scoped to a single line and names its cause: Kimai's
-  `LocaleService::DEFAULT_SETTINGS` carries an `rtl` key that the constructor's
-  own `@param` shape omits. The extensions are included explicitly and
-  `phpstan/extension-installer` is dropped, since PHPStan aborts when a neon
-  file is included twice.
-
+  * Move the GitHub actions to their current versions, and re-copy the `changelog`, `markdown`,
+    `yaml` and `composer` workflows from the ITK templates.
+  * Keep the composer workflow repo-specific. The template audits a committed `composer.lock`,
+    which a library does not ship, so the audit job installs first and audits the result.
 * [PR-46](https://github.com/itk-kimai/AarhusKommuneBundle/pull/46)
-  Cover the classes the testing plan still listed as untested: 45 tests over
-  `MenuSubscriber`, `UserSubscriber`, `WasController`,
-  `AarhusKommuneConfiguration` and `TimesheetHelper`, bringing the suite to 61
-  tests and 91 assertions. All of them build Kimai's `final`
-  `SystemConfiguration`, `AarhusKommuneConfiguration` and `TimesheetService`
-  for real and double only the repositories, so no database is needed. Writing
-  them turned up one bug, which is fixed rather than asserted:
-  `UserSubscriber` read `user_defaults.login_initial_view` unguarded, so a
-  `local.yaml` without a `user_defaults` node raised "Undefined array key" and
-  wrote a blank `login_initial_view` preference on every user Kimai created,
-  SAML provisioning included. The node has no `addDefaultsIfNotSet()`, so there
-  is nothing to read when it is left out; the preference is now left untouched
-  and Kimai decides where the user lands.
+  * Cover `MenuSubscriber`, `UserSubscriber`, `WasController`, `AarhusKommuneConfiguration` and
+    `TimesheetHelper`, taking the suite to 61 tests and 91 assertions.
+  * Guard the `user_defaults.login_initial_view` read, which raised "Undefined array key" and
+    wrote a blank preference on every user Kimai created when the node was absent.
+* [PR-45](https://github.com/itk-kimai/AarhusKommuneBundle/pull/45)
+  Raise PHPStan to level 9 with `bleedingEdge`, strict rules and deprecation rules, matching
+  Kimai's reference plugins, and fix the 12 errors in the code rather than silencing them.
+* [PR-43](https://github.com/itk-kimai/AarhusKommuneBundle/pull/43)
+  Send anonymous visitors to the configured default language; `LocaleRedirectSubscriber` acted
+  only on authenticated requests. Adds the PHPUnit harness and 16 tests for the subscriber.
+* [PR-42](https://github.com/itk-kimai/AarhusKommuneBundle/pull/42)
+  Require PHP `>=8.4`, drop the `config.platform` pin and the custom `composer.json` scripts,
+  and raise `extra.kimai.require` from `21800` to `26100`.
 
 ## [1.5.0] - 2026-07-02
 
@@ -162,7 +131,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * [PR-1](https://github.com/itk-dev/kimai-plugin-AarhusKommuneBundle/pull/1)
   Added Aarhus kommune plugin
 
-[Unreleased]: https://github.com/itk-kimai/AarhusKommuneBundle/compare/1.5.0...HEAD
+[Unreleased]: https://github.com/itk-kimai/AarhusKommuneBundle/compare/1.6.0...HEAD
+[1.6.0]: https://github.com/itk-kimai/AarhusKommuneBundle/compare/1.5.0...1.6.0
 [1.5.0]: https://github.com/itk-kimai/AarhusKommuneBundle/compare/1.4.0...1.5.0
 [1.4.0]: https://github.com/itk-kimai/AarhusKommuneBundle/compare/1.3.0...1.4.0
 [1.3.0]: https://github.com/itk-kimai/AarhusKommuneBundle/compare/1.2.0...1.3.0
