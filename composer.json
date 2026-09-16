@@ -14,14 +14,19 @@
         }
     ],
     "homepage": "https://github.com/itk-dev/kimai-plugin-AarhusKommuneBundle",
+    "require": {
+        "php": ">=8.4"
+    },
     "require-dev": {
         "ergebnis/composer-normalize": "^2.43",
         "friendsofphp/php-cs-fixer": "^3.0",
         "kimai/kimai": "dev-main",
-        "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan": "^2.0",
+        "phpstan/phpstan-deprecation-rules": "^2.0",
         "phpstan/phpstan-doctrine": "^2.0",
+        "phpstan/phpstan-strict-rules": "^2.0",
         "phpstan/phpstan-symfony": "^2.0",
+        "phpunit/phpunit": "^13.0",
         "symfony/console": "^6.0",
         "symfony/event-dispatcher": "^6.0",
         "vincentlanglet/twig-cs-fixer": "^4.0"
@@ -31,18 +36,19 @@
             "KimaiPlugin\\AarhusKommuneBundle\\": ""
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "KimaiPlugin\\AarhusKommuneBundle\\Tests\\": "Tests/"
+        }
+    },
     "config": {
         "allow-plugins": {
             "ergebnis/composer-normalize": true,
-            "phpstan/extension-installer": true,
             "symfony/flex": false,
             "symfony/runtime": false
         },
         "audit": {
             "abandoned": "report"
-        },
-        "platform": {
-            "php": "8.2.0"
         },
         "preferred-install": {
             "*": "dist"
@@ -52,35 +58,7 @@
     "extra": {
         "kimai": {
             "name": "Aarhus kommune",
-            "require": 21800
+            "require": 26100
         }
-    },
-    "scripts": {
-        "code-analysis": [
-            "@code-analysis/phpstan"
-        ],
-        "code-analysis/phpstan": [
-            "phpstan analyse . --configuration=phpstan.neon"
-        ],
-        "coding-standards-apply": [
-            "@coding-standards-apply/php-cs-fixer",
-            "@coding-standards-apply/twig-cs-fixer"
-        ],
-        "coding-standards-apply/php-cs-fixer": [
-            "php-cs-fixer fix"
-        ],
-        "coding-standards-apply/twig-cs-fixer": [
-            "twig-cs-fixer lint --fix"
-        ],
-        "coding-standards-check": [
-            "@coding-standards-check/php-cs-fixer",
-            "@coding-standards-check/twig-cs-fixer"
-        ],
-        "coding-standards-check/php-cs-fixer": [
-            "php-cs-fixer fix --dry-run --format=checkstyle"
-        ],
-        "coding-standards-check/twig-cs-fixer": [
-            "twig-cs-fixer lint"
-        ]
     }
 }
