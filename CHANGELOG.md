@@ -15,8 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * Raise `extra.kimai.require` to `26600`: the override now emits the markup 2.66's `help.scss`
     styles, and no earlier release has rules for it.
 * [PR-47](https://github.com/itk-kimai/AarhusKommuneBundle/pull/47)
-  Move the GitHub actions to their current versions, and re-copy the `changelog`, `markdown`,
-  `yaml` and `composer` workflows from the ITK templates.
+  * Move the GitHub actions to their current versions, and re-copy the `changelog`, `markdown`,
+    `yaml` and `composer` workflows from the ITK templates.
+  * Keep the composer workflow repo-specific. The template audits a committed `composer.lock`,
+    which a library does not ship, so the audit job installs first and audits the result.
 * [PR-46](https://github.com/itk-kimai/AarhusKommuneBundle/pull/46)
   * Cover `MenuSubscriber`, `UserSubscriber`, `WasController`, `AarhusKommuneConfiguration` and
     `TimesheetHelper`, taking the suite to 61 tests and 91 assertions.
