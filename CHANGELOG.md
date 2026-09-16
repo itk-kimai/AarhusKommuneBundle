@@ -7,6 +7,59 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* [PR-47](https://github.com/itk-kimai/AarhusKommuneBundle/pull/47)
+  Update the GitHub actions to their current versions: `actions/checkout@v7` everywhere, which the
+  deprecated Node 20 runtime forced anyway. Re-copy the `changelog`, `markdown`, `yaml` and `composer`
+  workflows from the ITK templates, which also brings the push path filters they now carry and
+  `composer audit --locked` in place of a full `composer install` followed by `composer audit`.
+
+* [PR-42](https://github.com/itk-kimai/AarhusKommuneBundle/pull/42)
+  Require PHP `>=8.4`, drop the `config.platform` pin and remove the custom
+  `composer.json` scripts (covered by the Taskfile). Raise
+  `extra.kimai.require` from `21800` to `26100`: the plugin has needed the
+  `config(...)` Twig function since 1.4.0 (Kimai 2.57), and its forked core
+  templates track 2.61's markup, so 2.18 was never a real floor. Both
+  declarations now state the only install this runs on, matching
+  `AakSamlBundle`.
+
+* [PR-43](https://github.com/itk-kimai/AarhusKommuneBundle/pull/43)
+  Send anonymous visitors to the configured default language.
+  `LocaleRedirectSubscriber` only acted on authenticated requests, so Kimai
+  negotiated the locale for everyone else from the browser's `Accept-Language`:
+  a German browser was served a German login page and one sending no header got
+  Kimai's hard-coded `en`. Adds a PHPUnit harness (`phpunit.xml.dist`,
+  `task test`, a `Test` workflow) and 16 tests covering the subscriber.
+
+* [PR-45](https://github.com/itk-kimai/AarhusKommuneBundle/pull/45)
+  Raise PHPStan to level 9 with `bleedingEdge`, `phpstan-strict-rules` and
+  `phpstan-deprecation-rules`, matching Kimai's own reference plugins. The 12
+  errors that surfaced are fixed in the code, not silenced:
+  `AarhusKommuneConfiguration` splits its one `mixed`-returning lookup into a
+  scalar and an array helper, so `getWasUrl()` narrows to a real `?string` and
+  the never-taken `?? []` fallbacks are gone; `WasController` drops `empty()`;
+  `AarhusKommuneExtension::load()` documents the `$configs` type its interface
+  declares; and the subscriber tests call `createStub()` statically. The one
+  `ignoreErrors` entry is scoped to a single line and names its cause: Kimai's
+  `LocaleService::DEFAULT_SETTINGS` carries an `rtl` key that the constructor's
+  own `@param` shape omits. The extensions are included explicitly and
+  `phpstan/extension-installer` is dropped, since PHPStan aborts when a neon
+  file is included twice.
+
+* [PR-46](https://github.com/itk-kimai/AarhusKommuneBundle/pull/46)
+  Cover the classes the testing plan still listed as untested: 45 tests over
+  `MenuSubscriber`, `UserSubscriber`, `WasController`,
+  `AarhusKommuneConfiguration` and `TimesheetHelper`, bringing the suite to 61
+  tests and 91 assertions. All of them build Kimai's `final`
+  `SystemConfiguration`, `AarhusKommuneConfiguration` and `TimesheetService`
+  for real and double only the repositories, so no database is needed. Writing
+  them turned up one bug, which is fixed rather than asserted:
+  `UserSubscriber` read `user_defaults.login_initial_view` unguarded, so a
+  `local.yaml` without a `user_defaults` node raised "Undefined array key" and
+  wrote a blank `login_initial_view` preference on every user Kimai created,
+  SAML provisioning included. The node has no `addDefaultsIfNotSet()`, so there
+  is nothing to read when it is left out; the preference is now left untouched
+  and Kimai decides where the user lands.
+
 ## [1.5.0] - 2026-07-02
 
 * [PR-40](https://github.com/itk-kimai/AarhusKommuneBundle/pull/40)
