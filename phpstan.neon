@@ -1,5 +1,20 @@
+includes:
+    # Registered explicitly rather than through phpstan/extension-installer: PHPStan
+    # aborts when the same neon file is included twice, and the installer offers no
+    # way to opt out of a single extension.
+    - vendor/composer/pcre/extension.neon
+    - vendor/phpstan/phpstan-deprecation-rules/rules.neon
+    - vendor/phpstan/phpstan-doctrine/extension.neon
+    - vendor/phpstan/phpstan-doctrine/rules.neon
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
+    - vendor/phpstan/phpstan-symfony/extension.neon
+    - vendor/phpstan/phpstan-symfony/rules.neon
+
 parameters:
-    level: 8
+    featureToggles:
+        bleedingEdge: true
+
+    level: 9
     excludePaths:
         - vendor/
     treatPhpDocTypesAsCertain: false
@@ -7,6 +22,15 @@ parameters:
     ignoreErrors:
         - identifier: missingType.iterableValue
         # - identifier: missingType.generics
+
+        # Kimai's own LocaleService::DEFAULT_SETTINGS carries an `rtl` key that
+        # the constructor's `@param` shape omits, and bleedingEdge seals array
+        # shapes. Passing the constant is the documented way to build the
+        # service, so the mismatch is upstream's, not ours.
+        -
+            identifier: argument.type
+            message: '#^Parameter \#1 \$languageSettings of class App\\Configuration\\LocaleService constructor expects#'
+            path: Tests/EventSubscriber/LocaleRedirectSubscriberTest.php
 
 
 # Local Variables:

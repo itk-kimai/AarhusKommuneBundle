@@ -51,24 +51,35 @@ final class AarhusKommuneConfiguration
 
     public function getMainMenu(): array
     {
-        return $this->findConfiguration('main_menu', array: true) ?? [];
+        return $this->findArrayConfiguration('main_menu');
     }
 
     public function getWasUrl(): ?string
     {
-        return $this->findConfiguration('was_url');
+        $url = $this->findConfiguration('was_url');
+
+        // The node is a scalar URL; anything else (or a blank string) means
+        // "not configured".
+        return \is_string($url) && '' !== $url ? $url : null;
     }
 
     public function getUserDefaults(): array
     {
-        return $this->findConfiguration('user_defaults', array: true) ?? [];
+        return $this->findArrayConfiguration('user_defaults');
     }
 
-    private function findConfiguration(string $name, bool $array = false): mixed
+    private function findConfiguration(string $name): string|int|bool|float|null
     {
-        $key = self::CONFIGURATION_NAME . '.' . $name;
-        $value = $array ? $this->configuration->findArray($key) : $this->configuration->find($key);
+        return $this->configuration->find($this->key($name));
+    }
 
-        return $value;
+    private function findArrayConfiguration(string $name): array
+    {
+        return $this->configuration->findArray($this->key($name));
+    }
+
+    private function key(string $name): string
+    {
+        return self::CONFIGURATION_NAME . '.' . $name;
     }
 }
