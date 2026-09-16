@@ -10,8 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.6.0] - 2026-09-16
 
 * [PR-48](https://github.com/itk-kimai/AarhusKommuneBundle/pull/48)
-  Follow Kimai 2.66's rebuilt help button in the `base.html.twig` override, and restore the
-  `</section>` and the `ThemeEvent::CONTENT_AFTER` trigger the override had dropped.
+  * Follow Kimai 2.66's rebuilt help button in the `base.html.twig` override, and restore the
+    `</section>` and the `ThemeEvent::CONTENT_AFTER` trigger the override had dropped.
+  * Raise `extra.kimai.require` to `26600`: the override now emits the markup 2.66's `help.scss`
+    styles, and no earlier release has rules for it.
 * [PR-47](https://github.com/itk-kimai/AarhusKommuneBundle/pull/47)
   Move the GitHub actions to their current versions, and re-copy the `changelog`, `markdown`,
   `yaml` and `composer` workflows from the ITK templates.
