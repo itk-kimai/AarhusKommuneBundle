@@ -20,7 +20,7 @@
     "require-dev": {
         "ergebnis/composer-normalize": "^2.43",
         "friendsofphp/php-cs-fixer": "^3.0",
-        "kimai/kimai": "dev-main",
+        "kimai/kimai": "2.72.0",
         "phpstan/phpstan": "^2.0",
         "phpstan/phpstan-deprecation-rules": "^2.0",
         "phpstan/phpstan-doctrine": "^2.0",

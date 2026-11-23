@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* [PR-51](https://github.com/itk-kimai/AarhusKommuneBundle/pull/51)
+  * Make `/was` and `/{_locale}/was` public through a decorator of `security.access_map`. Kimai 2.72.0 fixed its
+    locale rules in `access_control`, and these rules now require a login for `/{_locale}/was`.
+  * Require `kimai/kimai` 2.72.0 for development, not `dev-main`. The composer cooldown in the ITK images holds
+    back new releases, and `main` requires packages that are still in the cooldown.
+
 ## [1.6.0] - 2026-09-16
 
 * [PR-48](https://github.com/itk-kimai/AarhusKommuneBundle/pull/48)

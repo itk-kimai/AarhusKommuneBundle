@@ -17,6 +17,7 @@
             <directory>Controller</directory>
             <directory>EventSubscriber</directory>
             <directory>Helper</directory>
+            <directory>Security</directory>
         </include>
     </source>
 </phpunit>
